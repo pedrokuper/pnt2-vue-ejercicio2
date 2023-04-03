@@ -11,11 +11,54 @@
   background-color: lightgray;
 }
 
-.client-section label {
-  width: 20%;
-  padding: 5px 0px;
-}
-
 .client-section button {
   margin-top: 15px;
+}
+
+form {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  margin: 5px 0px;
+}
+
+form input {
+  padding: 7px 15px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  border: none;
+  padding: 7px 15px;
+  margin: 0px 5px;
+  box-shadow: 1px 1px 6px #ccc;
+  text-align: center;
+}
+
+form button {
+  cursor: pointer;
+  transition: filter ease-out 200ms;
+}
+
+form button:hover {
+  filter: brightness(0.9);
+}
+
+input:focus {
+  outline-color: lightgreen;
+}
+
+ul li {
+  margin: 25px 0px;
+}
+
+ul li div {
+  display: inline-block;
+
+  min-width: 150px;
+  max-width: 300px;
 }
