@@ -22,9 +22,11 @@
           />
           <label for="edad"> Edad: </label>
           <input name="edad" id="edad" v-model="edadCliente" type="number" />
-          <button @click.prevent="agregarCliente">
-            <span v-if="idClienteAModificar">Editar Cliente</span>
-            <span v-else="idClienteAModificar">Agregar Cliente</span>
+          <button v-if="!idClienteAModificar" @click.prevent="agregarCliente">
+            Agregar Cliente
+          </button>
+          <button v-else="idClienteAModificar" @click.prevent="editarCliente">
+            Editar Cliente
           </button>
         </form>
       </section>
@@ -73,17 +75,21 @@
         },
         methods: {
           agregarCliente() {
-            if (
-              this.nombreCliente != null &&
-              this.edadCliente != null &&
-              this.idClienteAModificar == null
-            ) {
-              this.clientes.push({
-                id: this.id++,
-                nombre: this.nombreCliente,
-                edad: this.edadCliente
-              });
-            } else {
+            if (this.nombreCliente != null && this.edadCliente != null) {
+              this.clientes = [
+                ...this.clientes,
+                {
+                  id: this.id++,
+                  nombre: this.nombreCliente,
+                  edad: this.edadCliente
+                }
+              ];
+            }
+            this.limpiarEstado();
+            //Para limpiar los valores dsp del click
+          },
+          editarCliente() {
+            if (this.idClienteAModificar) {
               const clienteModificado = this.clientes.find(
                 (cliente) => cliente.id == this.idClienteAModificar
               );
@@ -93,12 +99,8 @@
               this.idClienteAModificar = null;
             }
 
-            //Para limpiar los valores dsp del click
-            this.edadCliente = null;
-            this.nombreCliente = null;
+            this.limpiarEstado();
           },
-          //TODO - Mover logica desde agregar cliente a editar cliente
-          editarClientes() {},
           borrarCliente(idCliente) {
             //Pisa el array de clientes con un nuevo array sin  elemento que corresponde a idCliente
             this.clientes = this.clientes.filter((id) => idCliente != id.id);
@@ -108,6 +110,10 @@
             this.nombreCliente = cliente.nombre;
             this.edadCliente = cliente.edad;
             this.idClienteAModificar = cliente.id;
+          },
+          limpiarEstado() {
+            this.edadCliente = null;
+            this.nombreCliente = null;
           }
         }
       }).mount("#app");
