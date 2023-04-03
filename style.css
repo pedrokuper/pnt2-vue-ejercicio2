@@ -1,0 +1,21 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.client-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+  background-color: lightgray;
+}
+
+.client-section label {
+  width: 20%;
+  padding: 5px 0px;
+}
+
+.client-section button {
+  margin-top: 15px;
+}

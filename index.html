@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Vue - Ejercicio 2</title>
+  </head>
+  <body>
+    <div id="app">
+      <section class="client-section">
+        <h2 v-if="idClienteAModificar">Editar clientes:</h2>
+        <h2 v-else="idClienteAModificar">Agregar clientes:</h2>
+
+        <label>
+          Nombre:
+          <input v-model="nombreCliente" type="text" />
+        </label>
+        <label>
+          Edad:
+          <input v-model="edadCliente" type="number" />
+        </label>
+        <button @click="agregarCliente">
+          <span v-if="idClienteAModificar">Editar Cliente</span>
+          <span v-else="idClienteAModificar">Agregar Cliente</span>
+        </button>
+      </section>
+      <ul>
+        <li v-for="cliente in clientes" :key="cliente.id">
+          <span>{{cliente.nombre}}</span>:
+          <span>{{cliente.edad}}</span>
+          <button @click="borrarCliente(cliente.id)">Borrar</button>
+          <button @click="modificarDatos(cliente)">Modificar</button>
+        </li>
+      </ul>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      const { createApp } = Vue;
+
+      createApp({
+        data() {
+          return {
+            clientes: [
+              {
+                id: 1,
+                nombre: "Pedro",
+                edad: 33
+              },
+              {
+                id: 2,
+                nombre: "Juan",
+                edad: 23
+              },
+              {
+                id: 3,
+                nombre: "Ariel",
+                edad: 43
+              }
+            ],
+            nombreCliente: null,
+            edadCliente: null,
+            id: 4,
+            idClienteAModificar: null
+          };
+        },
+        methods: {
+          agregarCliente() {
+            if (
+              this.nombreCliente != null &&
+              this.edadCliente != null &&
+              this.idClienteAModificar == null
+            ) {
+              this.clientes.push({
+                id: this.id++,
+                nombre: this.nombreCliente,
+                edad: this.edadCliente
+              });
+            } else {
+              const clienteModificado = this.clientes.find(
+                (cliente) => cliente.id == this.idClienteAModificar
+              );
+
+              clienteModificado.nombre = this.nombreCliente;
+              clienteModificado.edad = this.edadCliente;
+              this.idClienteAModificar = null;
+            }
+
+            //Para limpiar los valores dsp del click
+            this.edadCliente = null;
+            this.nombreCliente = null;
+          },
+          //TODO - Mover logica desde agregar cliente a editar cliente
+          editarClientes() {},
+          borrarCliente(idCliente) {
+            //Pisa el array de clientes con un nuevo array sin  elemento que corresponde a idCliente
+            this.clientes = this.clientes.filter((id) => idCliente != id.id);
+          },
+          modificarDatos(cliente) {
+            //Carga los datos para mostrarlos en el input. Agrega una variable de control (id) para poder editar clientes/ mostrar elementos condicionales
+            this.nombreCliente = cliente.nombre;
+            this.edadCliente = cliente.edad;
+            this.idClienteAModificar = cliente.id;
+          }
+        }
+      }).mount("#app");
+    </script>
+  </body>
+</html>
